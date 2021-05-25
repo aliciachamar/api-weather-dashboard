@@ -1,0 +1,42 @@
+body {
+    width: 100%;
+    font-family: sans-serif;
+    margin: 0;
+}
+
+header {
+    background-color: rgb(88, 32, 179);
+}
+
+header h1 {
+    color: white;
+    line-height: 200%;
+    text-align: center;
+    margin: 0;
+}
+
+#indexSpan {
+    color: white;
+    padding: 2px;
+    border: solid 1px white;
+}
+
+.favorable {
+    background-color: green;
+    outline: solid 1px green;
+}
+
+.moderate {
+    background-color: yellow;
+    border: solid 1px yellow;
+    color: black;
+}
+
+.severe {
+    background-color: red;
+    border: solid 1px red;
+}
+
+a {
+    display: block;
+}
