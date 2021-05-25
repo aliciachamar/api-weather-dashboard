@@ -36,3 +36,11 @@ header h1 {
     background-color: red;
     border: solid 1px red;
 }
+
+img {
+    width: 50px;
+}
+
+.forecast {
+    background-color:rgb(154, 114, 218);
+}
