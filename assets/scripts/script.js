@@ -10,6 +10,29 @@ const $humiditySpan = $("#humiditySpan");
 const $indexSpan = $("#indexSpan");
 const $forecast = $(".forecast");
 
+function initPage() {
+    let city = "Denver";
+    const firstRequestURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=56ad829811fedde89e78e8505c048c6f";
+    fetch(firstRequestURL)
+        .then(function (response) {
+            response.json().then(function (data) {
+                const latitude = data.coord.lat;
+                const longitude = data.coord.lon;
+                const secondRequestURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + latitude + "&lon=" + longitude + "&units=imperial&appid=56ad829811fedde89e78e8505c048c6f";
+                fetch(secondRequestURL)
+                    .then(function (response) {
+                        response.json().then(function (data) {
+                            console.log(data);
+                            storeWeather(data, city);
+                            displayWeather(data, city);
+                        })
+                    })
+            })
+        }) 
+}
+
+initPage();
+
 $searchBtn.on("click", runSearch);
 
 function runSearch(event) {
