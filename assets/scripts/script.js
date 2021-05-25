@@ -3,6 +3,7 @@ const $searchInput = $("#search-input");
 const $searchHistory = $("#search-history");
 let city = "";
 const $cityName = $("#cityName");
+const $iconMain = $("#iconMain");
 const $tempSpan = $("#tempSpan");
 const $windSpan = $("#windSpan");
 const $humiditySpan = $("#humiditySpan");
@@ -14,9 +15,9 @@ $searchBtn.on("click", runSearch);
 function runSearch(event) {
     event.preventDefault();
     for (let i = 0; i < $forecast.length; i++) {
-        $forecast[i].text("");
+        $forecast[i].innerHTML = "";
     }
-    city = $searchInput.val();
+    city = $searchInput.val().trim();
     const firstRequestURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=56ad829811fedde89e78e8505c048c6f";
     fetch(firstRequestURL)
         .then(function (response) {
@@ -39,6 +40,7 @@ function runSearch(event) {
 }
 
 function displayWeather(data, city) {
+    $iconMain.attr("src", "http://openweathermap.org/img/wn/" + data.current.weather[0].icon + "@2x.png");
     $cityName.text(city + " - " + moment().format("MM/DD/YYYY"));
     $tempSpan.text(data.current.temp);
     $windSpan.text(data.current.wind_speed);
@@ -56,15 +58,7 @@ function displayWeather(data, city) {
         let $date = document.createElement("h3");
         $date.textContent = moment().add((i+1), "days").format("MM/DD/YYYY");
         let $icon = document.createElement("img");
-        if (data.daily[i].weather[0].icon === "01d") {
-            $icon.setAttribute("src", "http://openweathermap.org/img/wn/01d@2x.png");
-        } else if (data.daily[i].weather[0].icon === "02d") {
-            $icon.setAttribute("src", "http://openweathermap.org/img/wn/02d@2x.png");
-        } else if (data.daily[i].weather[0].icon === "03d") {
-            $icon.setAttribute("src", "http://openweathermap.org/img/wn/03d@2x.png");
-        } else if (data.daily[i].weather[0].icon === "04d") {
-            $icon.setAttribute("src", "http://openweathermap.org/img/wn/04d@2x.png");
-        }
+        $icon.setAttribute("src", "http://openweathermap.org/img/wn/" + data.daily[i].weather[0].icon + "@2x.png");
         let $temp = document.createElement("p");
         $temp.textContent = "Temp: " + data.daily[i].temp.day + "° F";
         let $wind = document.createElement("p");
@@ -76,7 +70,7 @@ function displayWeather(data, city) {
 }
 
 function addHistory(city) {
-    let $oldCity = $("<button class='btn'>" + city + "</button>");
+    let $oldCity = $("<p><button>" + city + "</button></p>");
     $searchHistory.append($oldCity);
     $oldCity.on("click", function() {
         loadStoredData(city);
@@ -88,6 +82,9 @@ function storeWeather(data, city) {
 }
 
 function loadStoredData(city) {
+    for (let i = 0; i < $forecast.length; i++) {
+        $forecast[i].innerHTML = "";
+    }
     let data = JSON.parse(localStorage.getItem(city));
-    displayWeather(data);
+    displayWeather(data, city);
 }
