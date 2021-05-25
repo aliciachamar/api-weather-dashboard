@@ -6,4 +6,4 @@ The cities the user has previously entered are saved in localStorage and the vis
 
 URL: https://aliciachamar.github.io/api-weather-dashboard/
 
-![Screenshot]()
+![Screenshot](https://raw.githubusercontent.com/aliciachamar/api-weather-dashboard/main/assets/images/screenshot.PNG)
