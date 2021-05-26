@@ -11,36 +11,24 @@ const $indexSpan = $("#indexSpan");
 const $forecast = $(".forecast");
 
 function initPage() {
-    let city = "Denver";
-    const firstRequestURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=56ad829811fedde89e78e8505c048c6f";
-    fetch(firstRequestURL)
-        .then(function (response) {
-            response.json().then(function (data) {
-                const latitude = data.coord.lat;
-                const longitude = data.coord.lon;
-                const secondRequestURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + latitude + "&lon=" + longitude + "&units=imperial&appid=56ad829811fedde89e78e8505c048c6f";
-                fetch(secondRequestURL)
-                    .then(function (response) {
-                        response.json().then(function (data) {
-                            console.log(data);
-                            storeWeather(data, city);
-                            displayWeather(data, city);
-                        })
-                    })
-            })
-        }) 
+    let lastSearched = JSON.parse(localStorage.getItem("cities"));
+    runSearch(lastSearched[0]);
 }
 
 initPage();
 
-$searchBtn.on("click", runSearch);
+$searchBtn.on("click", getInput);
 
-function runSearch(event) {
+function getInput(event) {
     event.preventDefault();
+    city = $searchInput.val().trim();
+    runSearch(city);
+}
+
+function runSearch(city) {
     for (let i = 0; i < $forecast.length; i++) {
         $forecast[i].innerHTML = "";
     }
-    city = $searchInput.val().trim();
     const firstRequestURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=56ad829811fedde89e78e8505c048c6f";
     fetch(firstRequestURL)
         .then(function (response) {
@@ -52,7 +40,7 @@ function runSearch(event) {
                     .then(function (response) {
                         response.json().then(function (data) {
                             console.log(data);
-                            storeWeather(data, city);
+                            // storeWeather(data, city);
                             displayWeather(data, city);
                         })
                     })
@@ -93,21 +81,39 @@ function displayWeather(data, city) {
 }
 
 function addHistory(city) {
-    let $oldCity = $("<p><button>" + city + "</button></p>");
-    $searchHistory.append($oldCity);
-    $oldCity.on("click", function() {
-        loadStoredData(city);
-    });
-}
-
-function storeWeather(data, city) {
-    localStorage.setItem(city, JSON.stringify(data));
-}
-
-function loadStoredData(city) {
-    for (let i = 0; i < $forecast.length; i++) {
-        $forecast[i].innerHTML = "";
+    let existingData;
+    if (localStorage.getItem("cities")) {
+        existingData = JSON.parse(localStorage.getItem("cities"));
+        if (!existingData.includes(city)) {
+            existingData.unshift(city);
+        } else {
+            let i = existingData.indexOf(city);
+            existingData.splice(i, 1);
+            existingData.unshift(city);
+        }
+        localStorage.setItem("cities", JSON.stringify(existingData));
+    } else {
+        localStorage.setItem("cities", JSON.stringify([city]));
     }
-    let data = JSON.parse(localStorage.getItem(city));
-    displayWeather(data, city);
+    $searchHistory.text("");
+    let searchHistory = JSON.parse(localStorage.getItem("cities"));
+    for (let i = 0; i < searchHistory.length; i++) {
+        let $searchedCity = $("<p><button>" + searchHistory[i] + "</button></p>");
+    $searchHistory.append($searchedCity);
+    $searchedCity.on("click", function() {
+        runSearch(searchHistory[i]);
+    });
+    }
 }
+
+// function storeWeather(data, city) {
+//     localStorage.setItem(city, JSON.stringify(data));
+// }
+
+// function loadStoredData(city) {
+//     for (let i = 0; i < $forecast.length; i++) {
+//         $forecast[i].innerHTML = "";
+//     }
+//     let data = JSON.parse(localStorage.getItem(city));
+//     displayWeather(data, city);
+// }
