@@ -11,8 +11,12 @@ const $indexSpan = $("#indexSpan");
 const $forecast = $(".forecast");
 
 function initPage() {
-    let lastSearched = JSON.parse(localStorage.getItem("cities"));
-    runSearch(lastSearched[0]);
+    if (localStorage.getItem("cities")) {
+        let lastSearched = JSON.parse(localStorage.getItem("cities"));
+        runSearch(lastSearched[0]);
+    } else {
+        runSearch("Denver");
+    }
 }
 
 initPage();
