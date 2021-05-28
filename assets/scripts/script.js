@@ -109,15 +109,3 @@ function addHistory(city) {
     });
     }
 }
-
-// function storeWeather(data, city) {
-//     localStorage.setItem(city, JSON.stringify(data));
-// }
-
-// function loadStoredData(city) {
-//     for (let i = 0; i < $forecast.length; i++) {
-//         $forecast[i].innerHTML = "";
-//     }
-//     let data = JSON.parse(localStorage.getItem(city));
-//     displayWeather(data, city);
-// }
