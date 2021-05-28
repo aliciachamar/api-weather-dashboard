@@ -62,9 +62,9 @@ function displayWeather(data, city) {
     $humiditySpan.text(data.current.humidity);
     $indexSpan.text(data.current.uvi);
     $indexSpan.attr("class", "");
-    if (data.current.uvi > 0 && data.current.uvi < 2) {
+    if (data.current.uvi >= 0 && data.current.uvi <= 2) {
         $indexSpan.addClass("favorable");
-    } else if (data.current.uvi > 2 && data.current.uvi < 5) {
+    } else if (data.current.uvi > 2 && data.current.uvi <= 5) {
         $indexSpan.addClass("moderate");
     } else {
         $indexSpan.addClass("severe");
