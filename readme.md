@@ -6,6 +6,8 @@ The user can input a city, and the app will pull up weather data for that city a
 
 The cities the user has previously entered are saved in localStorage and the visible search history to be pulled up again quickly on demand.
 
+Technologies used: HTML, CSS, JavaScript, API calls. 
+
 URL: https://aliciachamar.github.io/api-weather-dashboard/
 
 ![Screenshot](https://raw.githubusercontent.com/aliciachamar/api-weather-dashboard/main/assets/images/screenshot.PNG)
